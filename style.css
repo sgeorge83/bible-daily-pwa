@@ -58,6 +58,12 @@ button:active {
     transform: scale(0.98);
 }
 
+.disclaimer {
+    font-size: 10px;
+    opacity: 0.4;
+    margin-top: 10px;
+    line-height: 1.3;
+}
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
