@@ -45,19 +45,36 @@ body {
     opacity: 0.75;
 }
 
-/* SIMPLIFIER */
+/* Insight */
+.insight-title {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    opacity: 0.55;
+    margin-top: 14px;
+    margin-bottom: 6px;
+
+    font-family: system-ui, -apple-system, Arial;
+}
+
+/* Simplifier */
 .simplifier {
     font-size: 14px;
     line-height: 1.6;
-    margin-top: 12px;
 
     padding: 12px 14px;
     border-radius: 12px;
 
-    background: rgba(255, 255, 255, 0.05);
-    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 2px solid rgba(255, 255, 255, 0.18);
 
-    font-family: system-ui, -apple-system, Arial;
+    font-family: Georgia, "Times New Roman", serif; /* DISTINCT FONT */
+    font-style: italic; /* gives reflective tone */
+
+    color: #f5f5f5; /* keep readable, slightly premium */
+
+    margin-top: 4px;
 
     animation: fadeIn 0.4s ease;
 }
