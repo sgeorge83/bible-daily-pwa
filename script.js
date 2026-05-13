@@ -8,7 +8,7 @@ async function loadVerse() {
         document.getElementById("verse").innerText = data.esv_text;
         document.getElementById("reference").innerText = data.reference;
 
-        // cache for offline use
+        // save offline cache
         localStorage.setItem("bible_verse", JSON.stringify(data));
 
     } catch (error) {
@@ -23,10 +23,14 @@ async function loadVerse() {
             document.getElementById("reference").innerText = data.reference;
         } else {
             document.getElementById("verse").innerText =
-                "Stay still… Word will return shortly.";
+                "Stay still… the Word will return shortly.";
             document.getElementById("reference").innerText = "Offline";
         }
     }
 }
 
+// initial load
 loadVerse();
+
+// auto refresh every 10 minutes
+setInterval(loadVerse, 600000);
