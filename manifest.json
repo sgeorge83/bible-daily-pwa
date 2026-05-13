@@ -1,7 +1,7 @@
 {
   "name": "E-GEEK Bible",
   "short_name": "Bible",
-  "start_url": "/index1.html",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0f0f0f",
