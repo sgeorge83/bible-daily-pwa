@@ -111,8 +111,8 @@ button:active {
 /* DISCLAIMER (PREMIUM TYPOGRAPHY) */
 .disclaimer {
     font-size: 10px;
-    opacity: 1;
     color: #ffffff;
+    opacity: 1;
     margin-top: 6px;
     line-height: 1.4;
 
