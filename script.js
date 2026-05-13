@@ -9,10 +9,11 @@ async function loadVerse() {
 
         console.log("DATA:", data);
 
-        // Safe DOM references (prevents crashes)
+        // Safe DOM references
         const verseEl = document.getElementById("verse");
         const refEl = document.getElementById("reference");
-        const simEl = document.getElementById("simplifier");
+        const insightEl = document.getElementById("simplifier"); // AI content
+        const insightTitleEl = document.getElementById("insight-title");
         const loaderEl = document.getElementById("loader");
 
         if (!verseEl || !refEl) {
@@ -33,18 +34,23 @@ async function loadVerse() {
         // Render Reference
         refEl.innerText = data.reference || "";
 
-        // Render Simple Meaning (SAFE)
-        if (simEl && data.simple_meaning) {
-            simEl.innerText = data.simple_meaning;
-            simEl.classList.remove("hidden");
+        // Render Verse Insight (AI)
+        if (insightEl && data.simple_meaning) {
+            insightEl.innerText = data.simple_meaning;
+            insightEl.classList.remove("hidden");
         }
 
-        // Hide loader safely
+        // Show Insight title
+        if (insightTitleEl && data.simple_meaning) {
+            insightTitleEl.classList.remove("hidden");
+        }
+
+        // Hide loader
         if (loaderEl) {
             loaderEl.classList.add("hidden");
         }
 
-        // Show content safely
+        // Show main content
         verseEl.classList.remove("hidden");
         refEl.classList.remove("hidden");
 
@@ -61,7 +67,8 @@ async function loadVerse() {
 
             const verseEl = document.getElementById("verse");
             const refEl = document.getElementById("reference");
-            const simEl = document.getElementById("simplifier");
+            const insightEl = document.getElementById("simplifier");
+            const insightTitleEl = document.getElementById("insight-title");
 
             const cleanVerse = (data.esv_text || "")
                 .replace(/^[A-Za-z]+\s\d+:\d+\s*/g, "")
@@ -71,11 +78,18 @@ async function loadVerse() {
 
             if (verseEl) verseEl.innerText = cleanVerse;
             if (refEl) refEl.innerText = data.reference || "";
-            if (simEl && data.simple_meaning) simEl.innerText = data.simple_meaning;
+
+            if (insightEl && data.simple_meaning) {
+                insightEl.innerText = data.simple_meaning;
+                insightEl.classList.remove("hidden");
+            }
+
+            if (insightTitleEl && data.simple_meaning) {
+                insightTitleEl.classList.remove("hidden");
+            }
 
             verseEl?.classList.remove("hidden");
             refEl?.classList.remove("hidden");
-            simEl?.classList.remove("hidden");
         }
     }
 }
