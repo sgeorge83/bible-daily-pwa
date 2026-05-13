@@ -5,14 +5,18 @@ async function loadVerse() {
         const res = await fetch(API);
         const data = await res.json();
 
-        document.getElementById("verse").innerText = data.esv_text;
+        // REMOVE duplication risk
+        const cleanVerse = data.esv_text
+            .replace(/^.*?\d+:\d+\s*/g, "")
+            .replace(/\(ESV\)/g, "")
+            .trim();
+
+        document.getElementById("verse").innerText = cleanVerse;
         document.getElementById("reference").innerText = data.reference;
 
         localStorage.setItem("bible_verse", JSON.stringify(data));
 
     } catch (error) {
-        console.log("API failed, loading cache...");
-
         const cached = localStorage.getItem("bible_verse");
 
         if (cached) {
@@ -20,16 +24,9 @@ async function loadVerse() {
 
             document.getElementById("verse").innerText = data.esv_text;
             document.getElementById("reference").innerText = data.reference;
-
-        } else {
-            document.getElementById("verse").innerText =
-                "Stay still… the Word will return shortly.";
-            document.getElementById("reference").innerText = "Offline";
         }
     }
 }
 
 window.onload = loadVerse;
-
-// auto refresh every 10 minutes
 setInterval(loadVerse, 600000);
