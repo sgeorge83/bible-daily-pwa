@@ -1,3 +1,50 @@
+/* BASE */
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Arial, sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #0f0f0f);
+    color: #fff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+}
+
+/* CARD */
+.glass-card {
+    width: 90%;
+    max-width: 380px;
+    padding: 24px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(14px);
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    animation: fadeIn 0.5s ease;
+}
+
+/* VERSE */
+#verse {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* REFERENCE */
+#reference {
+    font-size: 14px;
+    opacity: 0.75;
+}
+
 /* LOADER */
 .loader {
     font-size: 14px;
@@ -5,6 +52,7 @@
     animation: pulse 1.2s infinite;
 }
 
+/* PULSE ANIMATION */
 @keyframes pulse {
     0% { opacity: 0.3; }
     50% { opacity: 0.8; }
@@ -28,11 +76,57 @@
     flex: 1;
 }
 
-/* PREMIUM TOUCH */
+/* BUTTON PREMIUM LOOK */
 button {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+
+    background: #2d6cdf;
+    color: white;
+
+    cursor: pointer;
+    font-weight: 500;
+
     transition: all 0.2s ease;
 }
 
 button:hover {
     transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* BRAND */
+.brand {
+    font-size: 12px;
+    opacity: 0.4;
+    letter-spacing: 2px;
+    margin-top: 6px;
+}
+
+/* DISCLAIMER (PREMIUM TYPOGRAPHY) */
+.disclaimer {
+    font-size: 9px;
+    opacity: 0.35;
+    margin-top: 6px;
+    line-height: 1.4;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+}
+
+/* FADE IN */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
