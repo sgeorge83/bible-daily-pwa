@@ -7,9 +7,13 @@ async function loadVerse() {
 
         // REMOVE duplication risk
         const cleanVerse = data.esv_text
-            .replace(/^.*?\d+:\d+\s*/g, "")
-            .replace(/\(ESV\)/g, "")
-            .trim();
+    // remove leading reference like "John 5:11"
+        .replace(/^[A-Za-z]+\s\d+:\d+\s*/g, "")
+    // remove bracket verse numbers like [11]
+        .replace(/\[\d+\]\s*/g, "")
+    // remove ESV tag
+        .replace(/\(ESV\)/g, "")
+        .trim();
 
         document.getElementById("verse").innerText = cleanVerse;
         document.getElementById("reference").innerText = data.reference;
