@@ -47,6 +47,7 @@ body {
 
 /* Insight */
 .insight-title {
+    text-align: left;
     font-size: 11px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
