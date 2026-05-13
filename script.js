@@ -2,63 +2,83 @@ const API = "https://bible-widget-backend.vercel.app/api/morning";
 
 async function loadVerse() {
     try {
-        // Optional: show loading state
-        document.getElementById("loader")?.classList.remove("hidden");
+        console.log("🔥 FETCH START");
 
         const res = await fetch(API);
         const data = await res.json();
 
-        // Clean verse text
-        const cleanVerse = data.esv_text
+        console.log("DATA:", data);
+
+        // Safe DOM references (prevents crashes)
+        const verseEl = document.getElementById("verse");
+        const refEl = document.getElementById("reference");
+        const simEl = document.getElementById("simplifier");
+        const loaderEl = document.getElementById("loader");
+
+        if (!verseEl || !refEl) {
+            console.error("❌ Missing required DOM elements");
+            return;
+        }
+
+        // Clean verse safely
+        const cleanVerse = (data.esv_text || "")
             .replace(/^[A-Za-z]+\s\d+:\d+\s*/g, "")
             .replace(/\[\d+\]\s*/g, "")
             .replace(/\(ESV\)/g, "")
             .trim();
 
-        // Verse
-        document.getElementById("verse").innerText = cleanVerse;
+        // Render Verse
+        verseEl.innerText = cleanVerse;
 
-        // Reference
-        document.getElementById("reference").innerText = data.reference;
+        // Render Reference
+        refEl.innerText = data.reference || "";
 
-        // Simple Meaning (AI)
-        document.getElementById("simplifier").innerText = data.simple_meaning || "";
+        // Render Simple Meaning (SAFE)
+        if (simEl && data.simple_meaning) {
+            simEl.innerText = data.simple_meaning;
+            simEl.classList.remove("hidden");
+        }
 
-        // Hide loader + show content
-        document.getElementById("loader")?.classList.add("hidden");
-        document.getElementById("verse").classList.remove("hidden");
-        document.getElementById("reference").classList.remove("hidden");
-        document.getElementById("simplifier")?.classList.remove("hidden");
+        // Hide loader safely
+        if (loaderEl) {
+            loaderEl.classList.add("hidden");
+        }
 
-        // Cache latest data
+        // Show content safely
+        verseEl.classList.remove("hidden");
+        refEl.classList.remove("hidden");
+
+        // Cache data
         localStorage.setItem("bible_verse", JSON.stringify(data));
 
     } catch (error) {
-        console.log("Fetch failed, using cache:", error);
+        console.error("❌ ERROR:", error);
 
         const cached = localStorage.getItem("bible_verse");
 
         if (cached) {
             const data = JSON.parse(cached);
 
-            const cleanVerse = data.esv_text
+            const verseEl = document.getElementById("verse");
+            const refEl = document.getElementById("reference");
+            const simEl = document.getElementById("simplifier");
+
+            const cleanVerse = (data.esv_text || "")
                 .replace(/^[A-Za-z]+\s\d+:\d+\s*/g, "")
                 .replace(/\[\d+\]\s*/g, "")
                 .replace(/\(ESV\)/g, "")
                 .trim();
 
-            document.getElementById("verse").innerText = cleanVerse;
-            document.getElementById("reference").innerText = data.reference;
-            document.getElementById("simplifier").innerText = data.simple_meaning || "";
+            if (verseEl) verseEl.innerText = cleanVerse;
+            if (refEl) refEl.innerText = data.reference || "";
+            if (simEl && data.simple_meaning) simEl.innerText = data.simple_meaning;
 
-            document.getElementById("verse").classList.remove("hidden");
-            document.getElementById("reference").classList.remove("hidden");
-            document.getElementById("simplifier")?.classList.remove("hidden");
+            verseEl?.classList.remove("hidden");
+            refEl?.classList.remove("hidden");
+            simEl?.classList.remove("hidden");
         }
     }
 }
 
 window.onload = loadVerse;
-
-// Auto refresh every 10 minutes
 setInterval(loadVerse, 600000);
