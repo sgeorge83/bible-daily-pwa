@@ -45,6 +45,23 @@ body {
     opacity: 0.75;
 }
 
+/* SIMPLIFIER */
+.simplifier {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 12px;
+
+    padding: 12px 14px;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+
+    font-family: system-ui, -apple-system, Arial;
+
+    animation: fadeIn 0.4s ease;
+}
+
 /* LOADER */
 .loader {
     font-size: 14px;
