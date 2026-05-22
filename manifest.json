@@ -19,18 +19,19 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1356x633",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "390x537",
+      "type": "image/png"
+    }
   ]
-"screenshots": [
-  {
-    "src": "screenshot-wide.png",
-    "sizes": "1356x633",
-    "type": "image/png",
-    "form_factor": "wide"
-  },
-  {
-    "src": "screenshot-mobile.png",
-    "sizes": "390x537",
-    "type": "image/png"
-  }
-]
 }
