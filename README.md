@@ -65,6 +65,18 @@ Users are encouraged to refer to the original scripture for full understanding.
 * OpenAI API (context summarization layer)
 * GitHub Pages hosting
 
+## Run locally
+
+This is a static PWA. Serve the project root over HTTP (opening `index.html` as a file will not work for fetch or PWA features):
+
+```bash
+python3 -m http.server 43123 --bind 127.0.0.1
+```
+
+Then open http://127.0.0.1:43123/
+
+Daily verse, reference, and insight come from `https://bible-widget-backend.vercel.app/api/morning`. If that API is unreachable, the app falls back to a verse cached in `localStorage`.
+
 7. 📱 PWA Features
 * Installable on mobile and desktop
 * Offline caching support
