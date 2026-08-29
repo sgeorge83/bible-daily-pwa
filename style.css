@@ -168,8 +168,8 @@ body {
 
 .brand {
     position: absolute;
-    top: calc(var(--gutter) + env(safe-area-inset-top, 0px));
-    left: calc(var(--gutter) + 4px);
+    top: var(--frame);
+    left: var(--frame);
     z-index: 3;
     display: flex;
     align-items: center;
@@ -185,8 +185,8 @@ body {
 
 #clock {
     position: absolute;
-    top: calc(var(--gutter) + env(safe-area-inset-top, 0px) + 0.55em);
-    right: calc(var(--gutter) + 8px);
+    top: calc(var(--frame) + 0.85em);
+    right: calc(var(--frame) + 8px);
     z-index: 3;
     font-variant-numeric: tabular-nums;
     font-size: clamp(0.78rem, 1.8vmin, 1.05rem);
