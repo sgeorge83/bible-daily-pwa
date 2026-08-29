@@ -1,36 +1,25 @@
 {
-  "name": "E-GEEK Bible",
-  "short_name": "Bible",
+  "name": "WordOnAir Labs — Verse of the Day",
+  "short_name": "Verse of the Day",
   "start_url": "./index.html",
   "scope": "./",
-  "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#0f0f0f",
-  "description": "Daily Bible verses powered by ESV API",
-
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#060b14",
+  "theme_color": "#060b14",
+  "description": "A fullscreen daily Scripture display from WordOnAir Labs. Open the URL on any screen.",
   "icons": [
     {
       "src": "icon1.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icon.png",
       "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot-wide.png",
-      "sizes": "1356x633",
       "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshot-mobile.png",
-      "sizes": "390x537",
-      "type": "image/png"
+      "purpose": "any"
     }
   ]
 }

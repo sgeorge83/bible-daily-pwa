@@ -1,46 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Verse of the Day">
+    <meta name="theme-color" content="#060b14">
+    <meta name="description" content="Verse of the Day — a fullscreen Scripture display from WordOnAir Labs.">
 
-    <title>E-GEEK Bible</title>
+    <title>Verse of the Day · WordOnAir Labs</title>
 
-    <link rel="stylesheet" href="style.css">
-
-    <!-- PWA theme color -->
-    <meta name="theme-color" content="#0f0f0f">
-
-    <!-- PWA manifest (for Android install) -->
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="apple-touch-icon" href="./icon1.png">
     <link rel="manifest" href="./manifest.json">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+    <div class="ambient" aria-hidden="true">
+        <div class="glow glow-teal"></div>
+        <div class="glow glow-gold"></div>
+        <div class="glow glow-purple"></div>
+        <div class="grain"></div>
+        <div class="particles">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
 
-    <div class="glass-card">
-
-        <div id="verse">Loading Wisdom...</div>
-
-        <div id="reference">ESV Bible</div>
-
-        <div id="insight-title" class="insight-title hidden">
-        Verse Insight
+    <div class="screen">
+        <div class="bezel" aria-hidden="true">
+            <i class="corner tl"></i>
+            <i class="corner tr"></i>
+            <i class="corner bl"></i>
+            <i class="corner br"></i>
         </div>
 
-        <div id="simplifier" class="simplifier hidden"></div>
+        <header class="masthead">
+            <a class="brand" href="https://wordonair.com" target="_blank" rel="noopener noreferrer">
+                <img class="brand-mark" src="./icon.png" alt="WordOnAir">
+                <span class="brand-text">
+                    <span class="wordmark">
+                        <span class="w-word">Word</span><span class="w-on">On</span><span class="w-air">Air</span>
+                    </span>
+                    <span class="labs">Labs</span>
+                </span>
+            </a>
 
-        <div class="brand">E-GEEK CREATIONS</div>
-       
-        <div class="disclaimer">
-        Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © Crossway.
-    
-    </div>
+            <div class="masthead-right">
+                <div class="on-air" title="Live daily verse">
+                    <span class="on-air-dot"></span>
+                    On Air
+                </div>
+                <div class="eq" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <time id="clock" datetime=""></time>
+            </div>
+        </header>
+
+        <main class="stage" id="stage">
+            <div class="cross-wrap" aria-hidden="true">
+                <svg class="cross" viewBox="0 0 48 72" fill="none">
+                    <defs>
+                        <linearGradient id="crossGold" x1="24" y1="0" x2="24" y2="72">
+                            <stop offset="0%" stop-color="#e8c96a"/>
+                            <stop offset="100%" stop-color="#c9a84c"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#crossGold)" d="M21.2 2.2h5.6c.8 0 1.4.6 1.4 1.4V22h16.2c.8 0 1.4.6 1.4 1.4v5.2c0 .8-.6 1.4-1.4 1.4H28.2V60.4c0 2.4-1.1 5.2-2.8 8.1-.5.8-1.9.8-2.4 0-1.7-2.9-2.8-5.7-2.8-8.1V30H7c-.8 0-1.4-.6-1.4-1.4v-5.2C5.6 22.6 6.2 22 7 22h14.2V3.6c0-.8.6-1.4 1.4-1.4Z"/>
+                </svg>
+            </div>
+
+            <p class="kicker">Verse of the Day</p>
+            <time id="date" class="date" datetime=""></time>
+
+            <p id="status" class="status">Receiving today’s verse…</p>
+
+            <blockquote id="verse" class="verse hidden"></blockquote>
+            <p id="reference" class="reference hidden"></p>
+
+            <div id="insight-block" class="insight-block hidden">
+                <p class="insight-title">Verse insight</p>
+                <p id="simplifier" class="insight"></p>
+            </div>
+        </main>
+
+        <footer class="colophon">
+            <p class="colophon-brand">WordOnAir Labs</p>
+            <p class="disclaimer">
+                Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © Crossway.
+            </p>
+        </footer>
     </div>
 
     <script src="script.js" defer></script>
-
 </body>
 </html>

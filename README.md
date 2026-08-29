@@ -1,69 +1,16 @@
-📖 E-GEEK Bible (PWA)
-A lightweight Progressive Web App that delivers a **daily Bible verse experience** with contextual clarity and simplicity.
+# Verse of the Day — WordOnAir Labs
 
-✨ Overview
-E-GEEK Bible provides a daily verse by combining trusted scripture sources with AI-assisted summarization to improve readability and understanding—without altering theological meaning.
-The goal is to make Scripture **accessible, clear, and distraction-free** for everyday reflection.
+A fullscreen daily Scripture display. Open the page in a browser, put it on a TV, kiosk, tablet, or phone, and the verse fills the screen. It follows the WordOnAir brand: navy, gold, and teal, with the gold cross heading used across WordOnAir Labs apps.
 
-⚙️ How It Works
-The system follows a multi-source pipeline:
+Live verse, reference, and a short insight come from the existing morning API. The date and clock update on the display. The verse refreshes every 10 minutes and again whenever the tab becomes visible.
 
-1. 📅 Verse of the Day Source
-* Fetches daily verse reference from:
-  Bible.org API
+## What you see
 
-2. 📖 Scripture Text Source
-* Retrieves the full verse text from:
-  English Standard Version (ESV) API
-
-3. 🤖 AI Context Layer
-* Uses OpenAI to generate a "short contextual explanation"
-* Output rules:
-  * 2–3 lines only
-  * Simplifies meaning for clarity
-  * No theological interpretation
-  * No doctrinal commentary
-  * No speculative content
-4. 🧠 AI Design Principle
-The AI layer is intentionally restricted to:
-✔ Simplification of language
-✔ Contextual clarity
-✔ Human-readable summary
-
-And strictly avoids:
-❌ Theological opinions
-❌ Doctrinal interpretation
-❌ Religious debate or assumptions
-❌ Hallucinated meaning beyond the verse
-
-This ensures the content remains **neutral, safe, and text-faithful**.
-
-5. 📌 Output Format
-
-Each daily verse is displayed as:
-* 📖 Bible Verse (ESV)
-* 📅 Reference (Bible.org)
-* 🤖 Short AI Summary (2–3 lines)
-* ⚠️ Disclaimer
-
-⚠️ Disclaimer
-Scripture text is sourced directly from the "ESV (English Standard Version)" via official API.
-
-The AI-generated explanation is:
-* For "educational and readability purposes only"
-* Not a replacement for theological study or interpretation
-* Not doctrinal guidance
-
-Users are encouraged to refer to the original scripture for full understanding.
-
-6. 🌐 Technology Stack
-* HTML / CSS / JavaScript
-* Progressive Web App (PWA)
-* Service Workers (offline support)
-* Bible.org API
-* ESV API
-* OpenAI API (context summarization layer)
-* GitHub Pages hosting
+- **WordOnAir Labs** wordmark and logo
+- Gold cross, **Verse of the Day**, and today’s date
+- ESV verse text that scales with the screen
+- Optional verse insight
+- Soft motion (ambient glow, gold motes, on-air equalizer) so a static display still feels alive
 
 ## Run locally
 
@@ -75,23 +22,24 @@ python3 -m http.server 43123 --bind 127.0.0.1
 
 Then open http://127.0.0.1:43123/
 
-Daily verse, reference, and insight come from `https://bible-widget-backend.vercel.app/api/morning`. If that API is unreachable, the app falls back to a verse cached in `localStorage`.
+If the API is unreachable, the last saved verse is shown from `localStorage`.
 
-7. 📱 PWA Features
-* Installable on mobile and desktop
-* Offline caching support
-* Fast loading experience
-* App-like full-screen mode
-* Home screen shortcut support
+## How the verse is built
 
-8. 🎯 Purpose
-To provide a **clean, distraction-free daily scripture experience** enhanced with AI clarity—without changing the original meaning of the text.
+1. Daily verse reference from Bible.org
+2. Scripture text from the ESV API
+3. A short 2–3 line clarity summary (not theological commentary)
 
-9. 🔐 Data Integrity
+Scripture text is never modified. The insight is additive only.
 
-* Scripture text is never modified
-* AI output is strictly additive (not interpretive authority)
-* Source text always remains primary reference
+## Disclaimer
 
-10. 📌 License
-For personal and educational use.
+Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © Crossway.
+
+The short explanation is for readability only. It is not doctrinal guidance. Refer to the original Scripture for full understanding.
+
+## Stack
+
+HTML, CSS, and JavaScript as an installable PWA. Branding matches [wordonair.com](https://wordonair.com). Hosted as static files (GitHub Pages or any static host).
+
+A project of **WordOnAir Labs**.
