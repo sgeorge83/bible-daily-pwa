@@ -1,5 +1,7 @@
 const API = "https://bible-widget-backend.vercel.app/api/morning";
 const CACHE_KEY = "bible_verse";
+const DAY_POLL_MS = 15000;
+const REGULAR_POLL_MS = 600000;
 
 const dateEl = document.getElementById("date");
 const clockEl = document.getElementById("clock");
@@ -8,6 +10,13 @@ const verseEl = document.getElementById("verse");
 const refEl = document.getElementById("reference");
 const insightBlockEl = document.getElementById("insight-block");
 const insightEl = document.getElementById("simplifier");
+const stageEl = document.getElementById("stage");
+const stageInnerEl = document.getElementById("stage-inner");
+
+let displayedDay = null;
+let fetchInFlight = false;
+let lastFetchAt = 0;
+let fitFrame = 0;
 
 function formatDate(now) {
     return new Intl.DateTimeFormat("en-US", {
@@ -32,16 +41,32 @@ function isoDate(now) {
     return `${y}-${m}-${d}`;
 }
 
+function parseIsoDay(day) {
+    const [y, m, d] = day.split("-").map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function dayFromData(data) {
+    if (data?.generated_at) {
+        return isoDate(new Date(data.generated_at));
+    }
+    return isoDate(new Date());
+}
+
 function updateClock() {
     const now = new Date();
-    if (dateEl) {
-        dateEl.textContent = formatDate(now);
-        dateEl.dateTime = isoDate(now);
-    }
     if (clockEl) {
         clockEl.textContent = formatClock(now);
         clockEl.dateTime = now.toISOString();
     }
+}
+
+function setDisplayedDate(day) {
+    if (!dateEl || !day) return;
+    displayedDay = day;
+    const dateObj = parseIsoDay(day);
+    dateEl.textContent = formatDate(dateObj);
+    dateEl.dateTime = day;
 }
 
 function cleanVerse(esvText) {
@@ -57,13 +82,47 @@ function showStatus(message, isError) {
     statusEl.textContent = message;
     statusEl.classList.toggle("error", Boolean(isError));
     statusEl.classList.remove("hidden");
+    scheduleFit();
 }
 
 function hideStatus() {
     statusEl?.classList.add("hidden");
 }
 
-function renderVerse(data, { fromCache = false } = {}) {
+function measureScale() {
+    if (!stageEl || !stageInnerEl) return 1;
+    const availW = stageEl.clientWidth;
+    const availH = stageEl.clientHeight;
+    if (availW < 8 || availH < 8) return 1;
+    const needW = Math.max(stageInnerEl.scrollWidth, stageInnerEl.offsetWidth);
+    const needH = Math.max(stageInnerEl.scrollHeight, stageInnerEl.offsetHeight);
+    return Math.min(availW / needW, availH / needH, 1);
+}
+
+function applyFit() {
+    if (!stageEl || !stageInnerEl) return;
+
+    insightBlockEl?.classList.remove("fit-hidden");
+    stageInnerEl.style.transform = "none";
+
+    let scale = measureScale();
+    if (scale < 0.62 && insightBlockEl && !insightBlockEl.classList.contains("hidden")) {
+        insightBlockEl.classList.add("fit-hidden");
+        scale = measureScale();
+    }
+
+    const next = Math.max(0.42, Math.min(scale, 1));
+    stageInnerEl.style.transform = next < 0.999 ? `scale(${next})` : "none";
+}
+
+function scheduleFit() {
+    cancelAnimationFrame(fitFrame);
+    fitFrame = requestAnimationFrame(() => {
+        requestAnimationFrame(applyFit);
+    });
+}
+
+function renderReading(data, { fromCache = false } = {}) {
     if (!verseEl || !refEl) return;
 
     const text = cleanVerse(data.esv_text);
@@ -73,6 +132,7 @@ function renderVerse(data, { fromCache = false } = {}) {
     }
 
     hideStatus();
+    setDisplayedDate(dayFromData(data));
 
     verseEl.textContent = text;
     verseEl.classList.remove("hidden");
@@ -97,21 +157,27 @@ function renderVerse(data, { fromCache = false } = {}) {
     } else {
         verseEl.removeAttribute("data-source");
     }
+
+    scheduleFit();
 }
 
 async function loadVerse() {
+    if (fetchInFlight) return;
+    fetchInFlight = true;
+    lastFetchAt = Date.now();
+
     try {
         const res = await fetch(API, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        renderVerse(data);
+        renderReading(data);
         localStorage.setItem(CACHE_KEY, JSON.stringify(data));
     } catch (error) {
         console.error("Verse fetch failed:", error);
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
             try {
-                renderVerse(JSON.parse(cached), { fromCache: true });
+                renderReading(JSON.parse(cached), { fromCache: true });
                 return;
             } catch {
                 /* fall through */
@@ -121,14 +187,32 @@ async function loadVerse() {
         verseEl?.classList.add("hidden");
         refEl?.classList.add("hidden");
         insightBlockEl?.classList.add("hidden");
+    } finally {
+        fetchInFlight = false;
+    }
+}
+
+function onTick() {
+    updateClock();
+    const today = isoDate(new Date());
+    if (displayedDay && today !== displayedDay && Date.now() - lastFetchAt >= DAY_POLL_MS) {
+        loadVerse();
     }
 }
 
 updateClock();
 loadVerse();
 
-setInterval(updateClock, 1000);
-setInterval(loadVerse, 600000);
+setInterval(onTick, 1000);
+setInterval(loadVerse, REGULAR_POLL_MS);
+
+window.addEventListener("resize", scheduleFit);
+window.addEventListener("orientationchange", scheduleFit);
+document.fonts?.ready?.then(scheduleFit);
+
+if (stageEl && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(scheduleFit).observe(stageEl);
+}
 
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {

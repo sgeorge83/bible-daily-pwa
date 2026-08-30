@@ -47,29 +47,31 @@
         <time id="clock" datetime=""></time>
 
         <main class="stage" id="stage">
-            <div class="cross-wrap" aria-hidden="true">
-                <svg class="cross" viewBox="0 0 48 72" fill="none">
-                    <defs>
-                        <linearGradient id="crossGold" x1="24" y1="0" x2="24" y2="72">
-                            <stop offset="0%" stop-color="#e8c96a"/>
-                            <stop offset="100%" stop-color="#c9a84c"/>
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#crossGold)" d="M21.2 2.2h5.6c.8 0 1.4.6 1.4 1.4V22h16.2c.8 0 1.4.6 1.4 1.4v5.2c0 .8-.6 1.4-1.4 1.4H28.2V60.4c0 2.4-1.1 5.2-2.8 8.1-.5.8-1.9.8-2.4 0-1.7-2.9-2.8-5.7-2.8-8.1V30H7c-.8 0-1.4-.6-1.4-1.4v-5.2C5.6 22.6 6.2 22 7 22h14.2V3.6c0-.8.6-1.4 1.4-1.4Z"/>
-                </svg>
-            </div>
+            <div class="stage-inner" id="stage-inner">
+                <div class="cross-wrap" aria-hidden="true">
+                    <svg class="cross" viewBox="0 0 48 72" fill="none">
+                        <defs>
+                            <linearGradient id="crossGold" x1="24" y1="0" x2="24" y2="72">
+                                <stop offset="0%" stop-color="#e8c96a"/>
+                                <stop offset="100%" stop-color="#c9a84c"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#crossGold)" d="M21.2 2.2h5.6c.8 0 1.4.6 1.4 1.4V22h16.2c.8 0 1.4.6 1.4 1.4v5.2c0 .8-.6 1.4-1.4 1.4H28.2V60.4c0 2.4-1.1 5.2-2.8 8.1-.5.8-1.9.8-2.4 0-1.7-2.9-2.8-5.7-2.8-8.1V30H7c-.8 0-1.4-.6-1.4-1.4v-5.2C5.6 22.6 6.2 22 7 22h14.2V3.6c0-.8.6-1.4 1.4-1.4Z"/>
+                    </svg>
+                </div>
 
-            <p class="kicker">Verse of the Day</p>
-            <time id="date" class="date" datetime=""></time>
+                <p class="kicker">Verse of the Day</p>
+                <time id="date" class="date" datetime=""></time>
 
-            <p id="status" class="status">Receiving today’s verse…</p>
+                <p id="status" class="status">Receiving today’s verse…</p>
 
-            <blockquote id="verse" class="verse hidden"></blockquote>
-            <p id="reference" class="reference hidden"></p>
+                <blockquote id="verse" class="verse hidden"></blockquote>
+                <p id="reference" class="reference hidden"></p>
 
-            <div id="insight-block" class="insight-block hidden">
-                <p class="insight-title">Verse insight</p>
-                <p id="simplifier" class="insight"></p>
+                <div id="insight-block" class="insight-block hidden">
+                    <p class="insight-title">Verse insight</p>
+                    <p id="simplifier" class="insight"></p>
+                </div>
             </div>
         </main>
 
