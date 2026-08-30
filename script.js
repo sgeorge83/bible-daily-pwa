@@ -69,12 +69,45 @@ function setDisplayedDate(day) {
     dateEl.dateTime = day;
 }
 
-function cleanVerse(esvText) {
-    return (esvText || "")
-        .replace(/^[A-Za-z]+\s\d+:\d+\s*/g, "")
-        .replace(/\[\d+\]\s*/g, "")
-        .replace(/\(ESV\)/g, "")
-        .trim();
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function collapseSpaces(value) {
+    return (value || "").replace(/\s+/g, " ").trim();
+}
+
+function formatVerseHtml(esvText) {
+    let text = (esvText || "").replace(/\s*\(ESV\)\s*$/i, "").trim();
+    text = text.replace(
+        /^(?:[1-3]\s+)?[A-Za-z][A-Za-z]*(?:\s+[A-Za-z]+)*\s+\d+:\d+(?:\s*[–—−-]\s*\d+)?\s*/u,
+        ""
+    );
+
+    const chunks = text.split(/\[(\d+)\]\s*/);
+    if (chunks.length < 3) {
+        const fallback = collapseSpaces(text);
+        return fallback ? `<span class="verse-unit">${escapeHtml(fallback)}</span>` : "";
+    }
+
+    let html = "";
+    const lead = collapseSpaces(chunks[0]);
+    if (lead) {
+        html += `<span class="verse-unit">${escapeHtml(lead)}</span>`;
+    }
+
+    for (let i = 1; i < chunks.length; i += 2) {
+        const num = chunks[i];
+        const body = collapseSpaces(chunks[i + 1] || "");
+        if (!body) continue;
+        html += `<span class="verse-unit"><span class="vnum">${escapeHtml(num)}</span>${escapeHtml(body)}</span>`;
+    }
+
+    return html;
 }
 
 function showStatus(message, isError) {
@@ -89,14 +122,10 @@ function hideStatus() {
     statusEl?.classList.add("hidden");
 }
 
-function measureScale() {
-    if (!stageEl || !stageInnerEl) return 1;
-    const availW = stageEl.clientWidth;
-    const availH = stageEl.clientHeight;
-    if (availW < 8 || availH < 8) return 1;
-    const needW = Math.max(stageInnerEl.scrollWidth, stageInnerEl.offsetWidth);
-    const needH = Math.max(stageInnerEl.scrollHeight, stageInnerEl.offsetHeight);
-    return Math.min(availW / needW, availH / needH, 1);
+function overflows() {
+    if (!stageEl || !stageInnerEl) return false;
+    return stageInnerEl.scrollHeight - stageEl.clientHeight > 2
+        || stageInnerEl.scrollWidth - stageEl.clientWidth > 2;
 }
 
 function applyFit() {
@@ -105,14 +134,29 @@ function applyFit() {
     insightBlockEl?.classList.remove("fit-hidden");
     stageInnerEl.style.transform = "none";
 
-    let scale = measureScale();
-    if (scale < 0.62 && insightBlockEl && !insightBlockEl.classList.contains("hidden")) {
-        insightBlockEl.classList.add("fit-hidden");
-        scale = measureScale();
-    }
+    const search = () => {
+        let low = 0.5;
+        let high = 1;
+        let best = 0.5;
+        for (let i = 0; i < 14; i += 1) {
+            const mid = (low + high) / 2;
+            stageInnerEl.style.setProperty("--fit", String(mid));
+            if (overflows()) {
+                high = mid;
+            } else {
+                best = mid;
+                low = mid;
+            }
+        }
+        stageInnerEl.style.setProperty("--fit", String(best));
+        return best;
+    };
 
-    const next = Math.max(0.42, Math.min(scale, 1));
-    stageInnerEl.style.transform = next < 0.999 ? `scale(${next})` : "none";
+    let best = search();
+    if (best < 0.64 && insightBlockEl && !insightBlockEl.classList.contains("hidden")) {
+        insightBlockEl.classList.add("fit-hidden");
+        best = search();
+    }
 }
 
 function scheduleFit() {
@@ -125,8 +169,8 @@ function scheduleFit() {
 function renderReading(data, { fromCache = false } = {}) {
     if (!verseEl || !refEl) return;
 
-    const text = cleanVerse(data.esv_text);
-    if (!text) {
+    const html = formatVerseHtml(data.esv_text);
+    if (!html) {
         showStatus("Today’s verse is not available yet.", true);
         return;
     }
@@ -134,7 +178,7 @@ function renderReading(data, { fromCache = false } = {}) {
     hideStatus();
     setDisplayedDate(dayFromData(data));
 
-    verseEl.textContent = text;
+    verseEl.innerHTML = html;
     verseEl.classList.remove("hidden");
     verseEl.classList.remove("updating");
     void verseEl.offsetWidth;

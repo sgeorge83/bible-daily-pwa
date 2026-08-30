@@ -202,21 +202,21 @@ body {
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
     text-align: center;
-    padding: clamp(4px, 1.2vmin, 14px) clamp(8px, 5vmin, 72px) clamp(6px, 1.6vmin, 18px);
+    padding: clamp(4px, 1.2vmin, 14px) clamp(16px, 4vw, 48px) clamp(6px, 1.6vmin, 18px);
     min-height: 0;
     overflow: hidden;
 }
 
 .stage-inner {
+    --fit: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     max-width: 100%;
-    transform-origin: top center;
 }
 
 .cross-wrap {
@@ -272,19 +272,40 @@ body {
 }
 
 .verse {
-    margin: clamp(10px, 2.4vmin, 28px) 0 0;
-    max-width: min(36rem, 94%);
+    margin: clamp(10px, 2.2vmin, 24px) 0 0;
+    width: min(92%, 76rem);
+    max-width: 100%;
     font-family: var(--font-serif);
     font-weight: 500;
-    font-size: clamp(1.15rem, 4.4vmin, 3.6rem);
-    line-height: 1.32;
+    font-size: calc(clamp(1.2rem, 2.4vw + 0.55rem, 2.75rem) * var(--fit, 1));
+    line-height: 1.38;
     color: var(--text);
-    white-space: pre-line;
     animation: fade-up 1s var(--ease-out) both;
 }
 
 .verse.updating {
     animation: fade-up 0.8s var(--ease-out) both;
+}
+
+.verse-unit {
+    display: block;
+    margin: 0 auto 0.55em;
+    max-width: 100%;
+}
+
+.verse-unit:last-child {
+    margin-bottom: 0;
+}
+
+.vnum {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.58em;
+    font-weight: 700;
+    color: var(--gold-bright);
+    letter-spacing: 0.06em;
+    margin-right: 0.42em;
+    vertical-align: 0.42em;
 }
 
 .reference {
@@ -298,8 +319,9 @@ body {
 }
 
 .insight-block {
-    margin-top: clamp(12px, 2.6vmin, 28px);
-    max-width: min(42rem, 94%);
+    margin-top: clamp(12px, 2.4vmin, 24px);
+    width: min(92%, 76rem);
+    max-width: 100%;
     padding: clamp(10px, 1.8vmin, 18px) clamp(12px, 2.2vmin, 22px);
     border-left: 2px solid rgba(201, 168, 76, 0.35);
     background: rgba(10, 18, 32, 0.35);
@@ -320,8 +342,8 @@ body {
     margin: 0;
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(0.92rem, 2.1vmin, 1.35rem);
-    line-height: 1.55;
+    font-size: calc(clamp(0.95rem, 1.5vw + 0.4rem, 1.35rem) * var(--fit, 1));
+    line-height: 1.5;
     color: var(--text-muted);
 }
 
