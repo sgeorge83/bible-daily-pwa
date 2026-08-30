@@ -423,8 +423,7 @@ body {
     }
 
     .verse {
-        max-width: 94%;
-        font-size: clamp(1.05rem, 5.4vmin, 2.4rem);
+        width: 94%;
     }
 }
 
