@@ -2,7 +2,7 @@
 
 A fullscreen daily Scripture display. Open the page in a browser, put it on a TV, kiosk, tablet, or phone, and the verse fills the screen. It follows the WordOnAir brand: navy, gold, and teal, with the gold cross heading used across WordOnAir Labs apps.
 
-Live verse, reference, and a short insight come from the existing morning API. The date and clock update on the display. The verse refreshes every 10 minutes and again whenever the tab becomes visible.
+The date on the display belongs to the current verse and only changes when a new reading arrives, so the calendar day and the passage update together. The layout scales to fit any screen without scrolling, whether the passage is short or long. The clock stays live. A new day’s verse is fetched at midnight and about every 10 minutes.
 
 ## What you see
 
